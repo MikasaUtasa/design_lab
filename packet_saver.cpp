@@ -55,7 +55,7 @@ void capturePackets(const string& ip) {
         return;
     }
 
-    string fileName = "packets_" + ip + "_" + getCurrentDateTime() + ".pcap";
+    string fileName = "logs/packets_" + ip + "_" + getCurrentDateTime() + ".pcap";
     pcap_dumper_t *dumper = pcap_dump_open(handle, fileName.c_str());
     if (dumper == nullptr) {
         cerr << "Could not open file for writing: " << pcap_geterr(handle) << endl;
@@ -108,6 +108,7 @@ int main() {
 
         for (const auto& ip : ips) {
             if (activeCaptures.find(ip) == activeCaptures.end()) {
+            	cout << "Rozpoczęto zapis dla: " << ip << endl;
                 thread(startCapture, ip).detach();
             }
         }
@@ -123,4 +124,3 @@ int main() {
 
     return 0;
 }
-
